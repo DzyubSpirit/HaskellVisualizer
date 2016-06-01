@@ -55,7 +55,7 @@ public class TreeView extends JComponent implements ToolChangeObservable,
     public void setBounds(int x, int y, int width, int height) {
         super.setBounds(x, y, width, height);
         boundsListeners.forEach((TreeViewBoundsListener listener) -> {
-            listener.newBounds(this, getBounds());
+            listener.newBounds(this);
         });
     }
 

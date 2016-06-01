@@ -57,7 +57,7 @@ public class ConstructorSpace extends JPanel implements ToolChangeObservable {
 
     public void releaseCurLink(TreeView source, TreeView target, boolean addAsLink) {
         if (addAsLink) {
-            links.add(new Link(source, target));
+            links.add(new Link(source, target, this));
         }
         curLink = null;
         repaint();
