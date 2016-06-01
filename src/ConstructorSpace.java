@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class ConstructorSpace extends JPanel implements ToolChangeObservable {
     private List<TreeView> treeViews = new ArrayList<>();
-    private List<Line> links = new ArrayList<>();
+    private List<Link> links = new ArrayList<>();
     private HashMap<Tool, List<MouseAdapter>> toolMouseAdapters = new HashMap<>();
     private Line curLink = null;
     {
@@ -40,12 +40,9 @@ public class ConstructorSpace extends JPanel implements ToolChangeObservable {
         int x = treeView.getX() + treeView.getWidth() / 2;
         int y = treeView.getY() + treeView.getHeight() / 2;
         curLink = new Line(x, y, x, y);
-        links.add(curLink);
     }
 
     public void modifyCurLink(int x, int y) {
-        int oldX = curLink.x2;
-        int oldY = curLink.y2;
         TreeView treeView = findTreeView(x, y);
 
         if (treeView != null) {
@@ -55,17 +52,15 @@ public class ConstructorSpace extends JPanel implements ToolChangeObservable {
             curLink.x2 = x;
             curLink.y2 = y;
         }
-
-        int minX = Math.min(Math.min(curLink.x1, curLink.x2), oldX);
-        int maxX = Math.max(Math.max(curLink.x1, curLink.x2), oldX);
-        int minY = Math.min(Math.min(curLink.y1, curLink.y2), oldY);
-        int maxY = Math.max(Math.max(curLink.y1, curLink.y2), oldY);
-        repaint(minX, minY, maxX-minX+1, maxY-minY+1);
+        repaint();
     }
 
-    public void removeCurLink() {
-        links.remove(curLink);
-        curLink.repaint(this);
+    public void releaseCurLink(TreeView source, TreeView target, boolean addAsLink) {
+        if (addAsLink) {
+            links.add(new Link(source, target));
+        }
+        curLink = null;
+        repaint();
     }
 
     public TreeView findTreeView(double x, double y) {
@@ -88,13 +83,18 @@ public class ConstructorSpace extends JPanel implements ToolChangeObservable {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        for (Line obj : links) {
+        for (Link obj : links) {
             obj.draw(g);
+        }
+
+        if (curLink != null) {
+            curLink.draw(g);
         }
 
         for (TreeView treeView : treeViews) {
             treeView.draw(g);
         }
+
     }
 
     private class HandMouseAdapter extends MouseAdapter {
@@ -105,21 +105,18 @@ public class ConstructorSpace extends JPanel implements ToolChangeObservable {
             Point curPoint = e.getPoint();
             int dx = curPoint.x - dragPoint.x;
             int dy = curPoint.y - dragPoint.y;
-            for (GraphicObject child : treeViews) {
-                child.moveXY(dx, dy);
-            }
-            for (GraphicObject child : links) {
+            for (GeometricObject child : treeViews) {
                 child.moveXY(dx, dy);
             }
             dragPoint = curPoint;
-            System.out.println("ConstructorSpace dragged");
+//            System.out.println("ConstructorSpace dragged");
 
         }
 
         @Override
         public void mousePressed(MouseEvent e) {
             dragPoint = e.getPoint();
-            System.out.println("ConstructorSpace pressed");
+//            System.out.println("ConstructorSpace pressed");
 
         }
 
@@ -129,8 +126,8 @@ public class ConstructorSpace extends JPanel implements ToolChangeObservable {
             treeViews.add(newElem);
             add(newElem);
             ToolChangeObserver.getInstance().add(newElem);
-            newElem.repaint();
-            System.out.println("ConstructorSpace Clicked");
+            repaint();
+//            System.out.println("ConstructorSpace Clicked");
         }
     }
 }

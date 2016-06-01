@@ -6,6 +6,4 @@ import java.awt.*;
  */
 public interface GraphicObject {
     void draw(Graphics g);
-    void repaint(JPanel panel);
-    void moveXY(int deltaX, int deltaY);
 }

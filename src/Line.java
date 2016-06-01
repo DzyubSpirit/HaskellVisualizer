@@ -4,7 +4,7 @@ import java.awt.*;
 /**
  * Created by vlad on 25.05.16.
  */
-public class Line implements GraphicObject {
+public class Line implements GraphicObject,GeometricObject {
     public int x1;
     public int y1;
     public int x2;
@@ -17,12 +17,12 @@ public class Line implements GraphicObject {
         this.y2 = y2;
     }
 
-    public void draw(Graphics g) {
-        g.drawLine(x1, y1, x2, y2);
+    public Line() {
+        this(0, 0, 0, 0);
     }
 
-    public void repaint(JPanel panel) {
-        panel.repaint();
+    public void draw(Graphics g) {
+        g.drawLine(x1, y1, x2, y2);
     }
 
     public void moveXY(int deltaX, int deltaY) {
