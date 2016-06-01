@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -9,9 +10,14 @@ public class Tree {
 
     public Tree(String name) {
         data = new TreeNodeData(name);
+        children = new ArrayList<>();
     }
 
     public String getName() {
         return data.getName();
+    }
+
+    public void addChild(Tree tree) {
+        children.add(tree);
     }
 }

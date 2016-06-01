@@ -18,9 +18,11 @@ public class MainFrame extends JFrame {
     private void initUI() {
         setLayout(null);
 
+        ToolChangeObserver.getInstance().setTool(Tool.LINK);
         constructorSpace = new ConstructorSpace();
         constructorSpace.setBounds(50, 50, width-100, height - 100);
         add(constructorSpace);
+        ToolChangeObserver.getInstance().add(constructorSpace);
         this.pack();
 
         setTitle(title);
