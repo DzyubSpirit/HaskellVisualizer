@@ -1,3 +1,5 @@
+package Views;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -9,8 +11,8 @@ import java.util.List;
  * Created by vlad on 26.05.16.
  */
 public class TreeView extends JComponent implements ToolChangeObservable,
-                                                    GraphicObject,
-                                                    GeometricObject {
+        GraphicObject,
+        GeometricObject {
     private ConstructorSpace constructorSpace;
     private Tree tree;
 //    private String name;
@@ -166,7 +168,6 @@ public class TreeView extends JComponent implements ToolChangeObservable,
 
         @Override
         public void mouseDragged(MouseEvent e) {
-//            System.out.println("Mouse dragged: "+e.getX()+" "+e.getY());
             Point curPoint = e.getPoint();
             setBounds(getX()+curPoint.x-dragPoint.x,
                     getY()+curPoint.y-dragPoint.y, getWidth(), getHeight());
@@ -174,7 +175,6 @@ public class TreeView extends JComponent implements ToolChangeObservable,
 
         @Override
         public void mouseClicked(MouseEvent e) {
-//            System.out.println("TreeView clicked");
         }
 
     }
@@ -184,13 +184,11 @@ public class TreeView extends JComponent implements ToolChangeObservable,
         public void mouseDragged(MouseEvent e) {
             Point loc = getLocation();
             constructorSpace.modifyCurLink(loc.x+e.getX(), loc.y+e.getY());
-//            System.out.println("Drag");
         }
 
         @Override
         public void mousePressed(MouseEvent e) {
             constructorSpace.addCurLink(TreeView.this);
-//            System.out.println("TreeView pressed");
         }
 
         @Override
@@ -198,12 +196,11 @@ public class TreeView extends JComponent implements ToolChangeObservable,
             TreeView treeView = constructorSpace.findTreeView(
                     TreeView.this.getX() + e.getX(),
                     TreeView.this.getY() + e.getY());
-            boolean isGoodLink = treeView != null;
+            boolean isGoodLink = treeView != null && treeView.tree != tree;
             if (isGoodLink) {
                 TreeView.this.tree.addChild(treeView.tree);
             }
             constructorSpace.releaseCurLink(TreeView.this, treeView, isGoodLink);
-//            System.out.println("TreeView mouse released");
         }
     }
 }

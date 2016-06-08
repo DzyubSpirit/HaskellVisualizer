@@ -1,10 +1,14 @@
-import javax.swing.*;
+package Views;
+
+import Views.GeometricObject;
+import Views.GraphicObject;
+
 import java.awt.*;
 
 /**
  * Created by vlad on 25.05.16.
  */
-public class Line implements GraphicObject,GeometricObject {
+public class Line implements GraphicObject, GeometricObject {
     public int x1;
     public int y1;
     public int x2;

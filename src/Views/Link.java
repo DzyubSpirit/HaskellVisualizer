@@ -1,10 +1,16 @@
+package Views;
+
+import Views.GraphicObject;
+import Views.TreeView;
+import Views.TreeViewBoundsListener;
+
 import java.awt.*;
 import javax.swing.JPanel;
 
 /**
  * Created by vlad on 01.06.16.
  */
-public class Link implements TreeViewBoundsListener,GraphicObject {
+public class Link implements TreeViewBoundsListener, GraphicObject {
     public static final int targetBallRadius = 7;
 
     private TreeView source;

@@ -1,12 +1,14 @@
+package Trees;
+
+import Trees.AbstractTree;
+
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by vlad on 24.05.16.
  */
-public class Tree {
+public class ConstantValueTree extends AbstractTree {
     private TreeNodeData data;
-    private List<Tree> children;
 
     public Tree(String name) {
         data = new TreeNodeData(name);
@@ -15,9 +17,5 @@ public class Tree {
 
     public String getName() {
         return data.getName();
-    }
-
-    public void addChild(Tree tree) {
-        children.add(tree);
     }
 }

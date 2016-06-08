@@ -1,3 +1,9 @@
+package Views;
+
+import Tools.Tool;
+import Tools.ToolChangeObservable;
+import Tools.ToolChangeObserver;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -110,14 +116,14 @@ public class ConstructorSpace extends JPanel implements ToolChangeObservable {
                 child.moveXY(dx, dy);
             }
             dragPoint = curPoint;
-//            System.out.println("ConstructorSpace dragged");
+//            System.out.println("Views.ConstructorSpace dragged");
 
         }
 
         @Override
         public void mousePressed(MouseEvent e) {
             dragPoint = e.getPoint();
-//            System.out.println("ConstructorSpace pressed");
+//            System.out.println("Views.ConstructorSpace pressed");
 
         }
 
@@ -128,7 +134,7 @@ public class ConstructorSpace extends JPanel implements ToolChangeObservable {
             add(newElem);
             ToolChangeObserver.getInstance().add(newElem);
             repaint();
-//            System.out.println("ConstructorSpace Clicked");
+//            System.out.println("Views.ConstructorSpace Clicked");
         }
     }
 }
