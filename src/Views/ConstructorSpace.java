@@ -1,8 +1,10 @@
 package Views;
 
+import DataTypes.HInt;
 import Tools.Tool;
 import Tools.ToolChangeObservable;
 import Tools.ToolChangeObserver;
+import Trees.ConstantValueTree;
 
 import javax.swing.*;
 import java.awt.*;
@@ -129,7 +131,8 @@ public class ConstructorSpace extends JPanel implements ToolChangeObservable {
 
         @Override
         public void mouseClicked(MouseEvent e) {
-            TreeView newElem = new TreeView(ConstructorSpace.this, new Tree("max1"), e.getX(), e.getY());
+            TreeView newElem = new TreeView(ConstructorSpace.this,
+                    new ConstantValueTree(new HInt(42)), e.getX(), e.getY());
             treeViews.add(newElem);
             add(newElem);
             ToolChangeObserver.getInstance().add(newElem);

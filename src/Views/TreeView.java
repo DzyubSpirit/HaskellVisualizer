@@ -1,5 +1,11 @@
 package Views;
 
+import Tools.Tool;
+import Tools.ToolChangeObservable;
+import Tools.ToolChangeObserver;
+import Trees.AbstractTree;
+import sun.reflect.generics.tree.Tree;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -14,7 +20,7 @@ public class TreeView extends JComponent implements ToolChangeObservable,
         GraphicObject,
         GeometricObject {
     private ConstructorSpace constructorSpace;
-    private Tree tree;
+    private AbstractTree tree;
 //    private String name;
 //    private
     private List<TreeViewBoundsListener> boundsListeners = new ArrayList<>();
@@ -30,7 +36,7 @@ public class TreeView extends JComponent implements ToolChangeObservable,
         setBorder(BorderFactory.createLineBorder(Color.black));
     }
 
-    public TreeView(ConstructorSpace constructorSpace, Tree tree, int mouseX, int mouseY) {
+    public TreeView(ConstructorSpace constructorSpace, AbstractTree tree, int mouseX, int mouseY) {
         this.constructorSpace = constructorSpace;
         this.tree = tree;
         setBounds(mouseX - 50, mouseY - 25, 100, 50);

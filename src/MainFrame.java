@@ -1,12 +1,10 @@
-import com.sun.imageio.plugins.common.ImageUtil;
-import javafx.scene.control.ToolBar;
+import Tools.Tool;
+import Tools.ToolChangeObserver;
+import Views.ConstructorSpace;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 /**
  * Created by vlad on 24.05.16.
@@ -44,7 +42,7 @@ public class MainFrame extends JFrame {
             ImageIcon ii = new ImageIcon("res/arrow.png");
             linkButton.setIcon(ii);
         } catch (Exception e) {
-            linkButton.setText("Link button!");
+            linkButton.setText("Views.Link button!");
         }
         linkButton.addActionListener((ActionEvent e) -> {
             ToolChangeObserver.getInstance().setTool(Tool.LINK);

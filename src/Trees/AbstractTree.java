@@ -9,7 +9,7 @@ import java.util.List;
 public abstract class AbstractTree {
     protected List<AbstractTree> children = new ArrayList<>();
 
-    public void addChild(AbstTree tree) {
+    public void addChild(AbstractTree tree) {
         children.add(tree);
     }
 
