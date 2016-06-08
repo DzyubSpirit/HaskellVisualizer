@@ -11,6 +11,7 @@ import java.util.List;
  */
 public class ConstructorSpace extends JPanel implements ToolChangeObservable {
     private List<TreeView> treeViews = new ArrayList<>();
+    private TreeView uppest;
     private List<Link> links = new ArrayList<>();
     private HashMap<Tool, List<MouseAdapter>> toolMouseAdapters = new HashMap<>();
     private Line curLink = null;
@@ -24,6 +25,7 @@ public class ConstructorSpace extends JPanel implements ToolChangeObservable {
 
     public ConstructorSpace() {
         setLayout(null);
+
         setBorder(BorderFactory.createLineBorder(Color.black));
         setBackground(Color.white);
     }
@@ -34,6 +36,10 @@ public class ConstructorSpace extends JPanel implements ToolChangeObservable {
         if (mouseAdapters != null) {
             ToolChangeObserver.setNewMouseAdapters(this, mouseAdapters);
         }
+    }
+
+    public void makeUppest(TreeView treeView) {
+        uppest = treeView;
     }
 
     public void addCurLink(TreeView treeView) {
@@ -90,11 +96,6 @@ public class ConstructorSpace extends JPanel implements ToolChangeObservable {
         if (curLink != null) {
             curLink.draw(g);
         }
-
-        for (TreeView treeView : treeViews) {
-            treeView.draw(g);
-        }
-
     }
 
     private class HandMouseAdapter extends MouseAdapter {

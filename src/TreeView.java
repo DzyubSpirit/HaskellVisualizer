@@ -1,7 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +13,8 @@ public class TreeView extends JComponent implements ToolChangeObservable,
                                                     GeometricObject {
     private ConstructorSpace constructorSpace;
     private Tree tree;
+//    private String name;
+//    private
     private List<TreeViewBoundsListener> boundsListeners = new ArrayList<>();
     private HashMap<Tool, List<MouseAdapter>> toolMouseAdapters = new HashMap<>();
     {
@@ -30,12 +31,79 @@ public class TreeView extends JComponent implements ToolChangeObservable,
     public TreeView(ConstructorSpace constructorSpace, Tree tree, int mouseX, int mouseY) {
         this.constructorSpace = constructorSpace;
         this.tree = tree;
-        setBounds(mouseX-25, mouseY-25, 50, 50);
+        setBounds(mouseX - 50, mouseY - 25, 100, 50);
         setLayout(null);
-        JLabel name = new JLabel(tree.getName());
-//        name.setBorder(BorderFactory.create());
-        name.setBounds(2, 2, 46, 20);
-        add(name);
+        LabelField labelField = new LabelField();
+        labelField.setBounds(2, 2, 96, 20);
+        add(labelField);
+    }
+
+    private class LabelField extends JPanel {
+        JTextField field;
+        JLabel label;
+
+        public LabelField(String text) {
+            setLayout(null);
+
+            field = new JTextField(text);
+            field.setVisible(false);
+            field.addFocusListener(new FocusAdapter() {
+                @Override
+                public void focusLost(FocusEvent e) {
+                    textEnterEnd();
+                }
+            });
+            field.addKeyListener(new KeyAdapter() {
+                @Override
+                public void keyPressed(KeyEvent e) {
+                    super.keyPressed(e);
+                    if (e.getExtendedKeyCode() == KeyEvent.VK_ENTER) {
+                        textEnterEnd();
+                    }
+                }
+            });
+
+            label = new JLabel(text);
+            label.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    label.setVisible(false);
+                    field.setVisible(true);
+                    field.requestFocus();
+                }
+
+            });
+            ToTreeViewMouseAdapter toTreeViewMouseAdapter = new ToTreeViewMouseAdapter();
+            label.addMouseListener(toTreeViewMouseAdapter);
+            label.addMouseMotionListener(toTreeViewMouseAdapter);
+
+            field.setBounds(getBounds());
+            label.setBounds(getBounds());
+            add(field);
+            add(label);
+        }
+
+        public LabelField() {
+            this("undefined");
+        }
+
+        @Override
+        public void setBounds(int x, int y, int width, int height) {
+            super.setBounds(x, y, width, height);
+            calcInners();
+        }
+
+        private void textEnterEnd() {
+            label.setText(field.getText());
+            field.setVisible(false);
+            label.setVisible(true);
+        }
+
+        private void calcInners() {
+            field.setBounds(getBounds());
+            label.setBounds(getBounds());
+        }
+
     }
 
     public void draw(Graphics g) { }
@@ -63,8 +131,21 @@ public class TreeView extends JComponent implements ToolChangeObservable,
         boundsListeners.add(listener);
     }
 
-    private class EditOnClickLabel extends JTextField {
+    private class ToTreeViewMouseAdapter extends MouseAdapter {
+        @Override
+        public void mousePressed(MouseEvent e) {
+            TreeView.this.processMouseEvent(e);
+        }
 
+        @Override
+        public void mouseDragged(MouseEvent e) {
+            TreeView.this.processMouseMotionEvent(e);
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            TreeView.this.processMouseEvent(e);
+        }
     }
 
     @Override
@@ -81,7 +162,6 @@ public class TreeView extends JComponent implements ToolChangeObservable,
         @Override
         public void mousePressed(MouseEvent e) {
             dragPoint = e.getPoint();
-
         }
 
         @Override
