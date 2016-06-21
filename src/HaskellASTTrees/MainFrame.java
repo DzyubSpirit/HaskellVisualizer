@@ -1,6 +1,8 @@
-import Tools.Tool;
-import Tools.ToolChangeObserver;
-import Views.ConstructorSpace;
+package HaskellASTTrees;
+
+import HaskellASTTrees.Tools.Tool;
+import HaskellASTTrees.Tools.ToolChangeObserver;
+import HaskellASTTrees.Views.ConstructorSpace;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,7 +36,7 @@ public class MainFrame extends JFrame {
             handButton.setText("Hand button!");
         }
         handButton.addActionListener((ActionEvent e) -> {
-            ToolChangeObserver.getInstance().setTool(Tool.HAND);
+            ToolChangeObserver.getInstance().toolChanged(Tool.HAND);
         });
         toolBar.add(handButton);
         JButton linkButton = new JButton();
@@ -42,16 +44,16 @@ public class MainFrame extends JFrame {
             ImageIcon ii = new ImageIcon("res/arrow.png");
             linkButton.setIcon(ii);
         } catch (Exception e) {
-            linkButton.setText("Views.Link button!");
+            linkButton.setText("Link button!");
         }
         linkButton.addActionListener((ActionEvent e) -> {
-            ToolChangeObserver.getInstance().setTool(Tool.LINK);
+            ToolChangeObserver.getInstance().toolChanged(Tool.LINK);
         });
         toolBar.add(linkButton);
 
         add(toolBar, BorderLayout.WEST);
 
-        ToolChangeObserver.getInstance().setTool(Tool.HAND);
+        ToolChangeObserver.getInstance().toolChanged(Tool.HAND);
         constructorSpace = new ConstructorSpace();
         constructorSpace.setBounds(50, 50, width-100, height - 100);
         add(constructorSpace);

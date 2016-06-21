@@ -1,6 +1,5 @@
-package Views;
+package HaskellASTTrees.MyGraphics;
 
-import javax.swing.*;
 import java.awt.*;
 
 /**

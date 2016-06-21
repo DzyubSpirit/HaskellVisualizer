@@ -1,4 +1,4 @@
-package Trees;
+package HaskellASTTrees.Trees;
 
 /**
  * Created by vlad on 25.05.16.

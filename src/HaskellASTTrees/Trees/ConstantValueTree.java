@@ -1,9 +1,7 @@
-package Trees;
+package HaskellASTTrees.Trees;
 
-import DataTypes.HType;
-import Trees.AbstractTree;
-
-import java.util.ArrayList;
+import HaskellASTTrees.DataTypes.HType;
+import HaskellASTTrees.DataTypes.HType;
 
 /**
  * Created by vlad on 24.05.16.

@@ -1,8 +1,7 @@
-package Views;
+package HaskellASTTrees.Views;
 
-import Views.GraphicObject;
-import Views.TreeView;
-import Views.TreeViewBoundsListener;
+import HaskellASTTrees.MyGraphics.GraphicObject;
+import HaskellASTTrees.MyGraphics.Line;
 
 import java.awt.*;
 import javax.swing.JPanel;

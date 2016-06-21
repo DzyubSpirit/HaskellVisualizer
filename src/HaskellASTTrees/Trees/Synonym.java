@@ -1,6 +1,6 @@
-package Trees;
+package HaskellASTTrees.Trees;
 
-import DataTypes.HType;
+import HaskellASTTrees.DataTypes.HType;
 
 /**
  * Created by vlad on 08.06.16.
@@ -15,7 +15,9 @@ public class Synonym extends AbstractTree {
     }
 
     @Override
-    public void addChild(AbstractTree tree) {}
+    public boolean addChild(AbstractTree tree) {
+        return true;
+    }
 
     @Override
     public void removeChild(AbstractTree tree) {}

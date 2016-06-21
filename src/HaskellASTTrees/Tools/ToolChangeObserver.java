@@ -1,4 +1,4 @@
-package Tools;
+package HaskellASTTrees.Tools;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -34,7 +34,7 @@ public class ToolChangeObserver {
         observables.remove(observable);
     }
 
-    public void setTool(Tool tool) {
+    public void toolChanged(Tool tool) {
         curTool = tool;
         observables.forEach((ToolChangeObservable observable) -> {
             observable.toolChanged(tool);

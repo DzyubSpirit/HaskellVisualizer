@@ -1,10 +1,12 @@
-package Views;
+package HaskellASTTrees.Views;
 
-import DataTypes.HInt;
-import Tools.Tool;
-import Tools.ToolChangeObservable;
-import Tools.ToolChangeObserver;
-import Trees.ConstantValueTree;
+import HaskellASTTrees.DataTypes.HInt;
+import HaskellASTTrees.MyGraphics.GeometricObject;
+import HaskellASTTrees.Tools.Tool;
+import HaskellASTTrees.Tools.ToolChangeObservable;
+import HaskellASTTrees.Tools.ToolChangeObserver;
+import HaskellASTTrees.Trees.ConstantValueTree;
+import HaskellASTTrees.MyGraphics.Line;
 
 import javax.swing.*;
 import java.awt.*;
@@ -44,10 +46,6 @@ public class ConstructorSpace extends JPanel implements ToolChangeObservable {
         if (mouseAdapters != null) {
             ToolChangeObserver.setNewMouseAdapters(this, mouseAdapters);
         }
-    }
-
-    public void makeUppest(TreeView treeView) {
-        uppest = treeView;
     }
 
     public void addCurLink(TreeView treeView) {
@@ -118,14 +116,14 @@ public class ConstructorSpace extends JPanel implements ToolChangeObservable {
                 child.moveXY(dx, dy);
             }
             dragPoint = curPoint;
-//            System.out.println("Views.ConstructorSpace dragged");
+//            System.out.println("ConstructorSpace dragged");
 
         }
 
         @Override
         public void mousePressed(MouseEvent e) {
             dragPoint = e.getPoint();
-//            System.out.println("Views.ConstructorSpace pressed");
+//            System.out.println("ConstructorSpace pressed");
 
         }
 
@@ -135,9 +133,8 @@ public class ConstructorSpace extends JPanel implements ToolChangeObservable {
                     new ConstantValueTree(new HInt(42)), e.getX(), e.getY());
             treeViews.add(newElem);
             add(newElem);
-            ToolChangeObserver.getInstance().add(newElem);
             repaint();
-//            System.out.println("Views.ConstructorSpace Clicked");
+//            System.out.println("ConstructorSpace Clicked");
         }
     }
 }

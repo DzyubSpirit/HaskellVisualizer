@@ -1,38 +1,35 @@
-package Views;
+package HaskellASTTrees.Views;
 
-import Tools.Tool;
-import Tools.ToolChangeObservable;
-import Tools.ToolChangeObserver;
-import Trees.AbstractTree;
-import sun.reflect.generics.tree.Tree;
+import HaskellASTTrees.Tools.Tool;
+import HaskellASTTrees.Tools.ToolChangingManager;
+import HaskellASTTrees.Trees.AbstractTree;
+import HaskellASTTrees.MyGraphics.*;
+
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
  * Created by vlad on 26.05.16.
  */
-public class TreeView extends JComponent implements ToolChangeObservable,
+public class TreeView extends JComponent implements
         GraphicObject,
         GeometricObject {
     private ConstructorSpace constructorSpace;
     private AbstractTree tree;
+    static private ToolChangingManager toolChangingManager;
 //    private String name;
 //    private
     private List<TreeViewBoundsListener> boundsListeners = new ArrayList<>();
-    private HashMap<Tool, List<MouseAdapter>> toolMouseAdapters = new HashMap<>();
     {
-        List<MouseAdapter> mouseAdapters = new ArrayList<>();
-        mouseAdapters.add(new HandMouseAdapter());
-        toolMouseAdapters.put(Tool.HAND, mouseAdapters);
-        mouseAdapters = new ArrayList<>();
-        mouseAdapters.add(new LinkMouseAdapter());
-        toolMouseAdapters.put(Tool.LINK, mouseAdapters);
-
+        toolChangingManager = new ToolChangingManager(this)
+                            .addMouseAdapter(new HandMouseAdapter())
+                            .saveToolAdapters(Tool.HAND)
+                            .addMouseAdapter(new LinkMouseAdapter())
+                            .saveToolAdapters(Tool.LINK);
         setBorder(BorderFactory.createLineBorder(Color.black));
     }
 
@@ -151,16 +148,7 @@ public class TreeView extends JComponent implements ToolChangeObservable,
         }
 
         @Override
-        public void mouseReleased(MouseEvent e) {
-            TreeView.this.processMouseEvent(e);
-        }
-    }
-
-    @Override
-    public void toolChanged(Tool tool) {
-        List<MouseAdapter> mouseAdapters = toolMouseAdapters.get(tool);
-        if (mouseAdapters != null) {
-            ToolChangeObserver.setNewMouseAdapters(this, mouseAdapters);
+        public void mouseReleased(MouseEvent e) { TreeView.this.processMouseEvent(e);
         }
     }
 
@@ -202,9 +190,15 @@ public class TreeView extends JComponent implements ToolChangeObservable,
             TreeView treeView = constructorSpace.findTreeView(
                     TreeView.this.getX() + e.getX(),
                     TreeView.this.getY() + e.getY());
-            boolean isGoodLink = treeView != null && treeView.tree != tree;
-            if (isGoodLink) {
-                TreeView.this.tree.addChild(treeView.tree);
+            boolean isGoodLink = false;
+            if (treeView != null) {
+                AbstractTree childTree = TreeView.this.tree;
+                isGoodLink = childTree.isGoodParent(treeView.tree);
+                if (isGoodLink) {
+                    TreeView.this.tree.addChild(treeView.tree);
+                } else {
+                    System.out.println("Not a tree");
+                }
             }
             constructorSpace.releaseCurLink(TreeView.this, treeView, isGoodLink);
         }

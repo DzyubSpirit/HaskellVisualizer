@@ -1,4 +1,4 @@
-package Views;
+package HaskellASTTrees.MyGraphics;
 
 /**
  * Created by vlad on 01.06.16.

@@ -1,7 +1,4 @@
-package Views;
-
-import Views.GeometricObject;
-import Views.GraphicObject;
+package HaskellASTTrees.MyGraphics;
 
 import java.awt.*;
 

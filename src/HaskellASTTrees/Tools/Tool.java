@@ -1,4 +1,4 @@
-package Tools;
+package HaskellASTTrees.Tools;
 
 /**
  * Created by vlad on 25.05.16.

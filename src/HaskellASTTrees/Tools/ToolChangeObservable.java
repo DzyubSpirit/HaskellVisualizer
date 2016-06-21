@@ -1,6 +1,5 @@
-package Tools;
+package HaskellASTTrees.Tools;
 
-import Tools.Tool;
 
 /**
  * Created by vlad on 25.05.16.
