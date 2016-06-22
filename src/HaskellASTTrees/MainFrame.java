@@ -53,10 +53,10 @@ public class MainFrame extends JFrame {
 
         add(toolBar, BorderLayout.WEST);
 
-        ToolChangeObserver.getInstance().toolChanged(Tool.HAND);
         constructorSpace = new ConstructorSpace();
         constructorSpace.setBounds(50, 50, width-100, height - 100);
         add(constructorSpace);
+        ToolChangeObserver.getInstance().toolChanged(Tool.HAND);
         this.pack();
 
         setTitle(title);

@@ -12,12 +12,12 @@ import javax.swing.JPanel;
 public class Link implements TreeViewBoundsListener, GraphicObject {
     public static final int targetBallRadius = 7;
 
-    private TreeView source;
-    private TreeView target;
+    private AbstractTreeView source;
+    private AbstractTreeView target;
     private Line line = new Line();
     private JPanel parent;
 
-    public Link(TreeView source, TreeView target, JPanel parent) {
+    public Link(AbstractTreeView source, AbstractTreeView target, JPanel parent) {
         this.source = source;
         this.target = target;
         source.addBoundsListener(this);
@@ -26,10 +26,17 @@ public class Link implements TreeViewBoundsListener, GraphicObject {
         this.parent = parent;
     }
 
-    public Link(TreeView source, TreeView target) {
+    public Link(AbstractTreeView source, AbstractTreeView target) {
         this(source, target, null);
     }
 
+    public AbstractTreeView getSource() {
+        return source;
+    }
+
+    public AbstractTreeView getTarget() {
+        return target;
+    }
 
     private void calcLine() {
         calcSourcePoint();

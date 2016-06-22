@@ -6,4 +6,7 @@ package HaskellASTTrees.DataTypes;
 public class HString implements HType {
     private String data;
 
+    public HString(String data) {
+        this.data = data;
+    }
 }

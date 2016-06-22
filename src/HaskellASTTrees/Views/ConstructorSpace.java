@@ -1,11 +1,11 @@
 package HaskellASTTrees.Views;
 
-import HaskellASTTrees.DataTypes.HInt;
+import HaskellASTTrees.DataTypes.HString;
 import HaskellASTTrees.MyGraphics.GeometricObject;
 import HaskellASTTrees.Tools.Tool;
-import HaskellASTTrees.Tools.ToolChangeObservable;
-import HaskellASTTrees.Tools.ToolChangeObserver;
 import HaskellASTTrees.Tools.ToolChangingManager;
+import HaskellASTTrees.Trees.AbstractTree;
+import HaskellASTTrees.Trees.AbstractTreeObserver;
 import HaskellASTTrees.Trees.ConstantValueTree;
 import HaskellASTTrees.MyGraphics.Line;
 
@@ -15,12 +15,15 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * Created by vlad on 25.05.16.
  */
-public class ConstructorSpace extends JPanel {
-    private List<TreeView> treeViews = new ArrayList<>();
+public class ConstructorSpace extends JPanel implements AbstractTreeObserver {
+    private List<AbstractTreeView> treeViews = new ArrayList<>();
     private List<Link> links = new ArrayList<>();
     private ToolChangingManager toolChangingManager;
     private Line curLink = null;
@@ -41,14 +44,14 @@ public class ConstructorSpace extends JPanel {
         setBackground(Color.white);
     }
 
-    public void addCurLink(TreeView treeView) {
+    public void addCurLink(AbstractTreeView treeView) {
         int x = treeView.getX() + treeView.getWidth() / 2;
         int y = treeView.getY() + treeView.getHeight() / 2;
         curLink = new Line(x, y, x, y);
     }
 
     public void modifyCurLink(int x, int y) {
-        TreeView treeView = findTreeView(x, y);
+        AbstractTreeView treeView = findTreeView(x, y);
 
         if (treeView != null) {
             curLink.x2 = treeView.getX() + treeView.getWidth() / 2;
@@ -60,17 +63,14 @@ public class ConstructorSpace extends JPanel {
         repaint();
     }
 
-    public void releaseCurLink(TreeView source, TreeView target, boolean addAsLink) {
-        if (addAsLink) {
-            links.add(new Link(source, target, this));
-        }
+    public void releaseCurLink() {
         curLink = null;
         repaint();
     }
 
-    public TreeView findTreeView(double x, double y) {
-        TreeView selected = null;
-        for (TreeView treeView : treeViews) {
+    public AbstractTreeView findTreeView(double x, double y) {
+        AbstractTreeView selected = null;
+        for (AbstractTreeView treeView : treeViews) {
             int treeX = treeView.getX();
             int treeY = treeView.getY();
             int treeWidth = treeView.getWidth();
@@ -85,10 +85,40 @@ public class ConstructorSpace extends JPanel {
     }
 
     @Override
+    public void childAdded(AbstractTree parent, AbstractTree newChild) {
+
+    }
+
+    @Override
+    public void childRemoved(AbstractTree parent, AbstractTree oldChild) {
+
+    }
+
+    @Override
+    public void parentChanged(AbstractTree child, AbstractTree oldParent) {
+        List<AbstractTreeView> childViews = child.getTreeViews();
+       links = links.stream()
+                     .filter((Link link) -> !link.getSource().isViewOf(child)
+                                         || !link.getTarget().isViewOf(oldParent))
+                     .collect(Collectors.toList());
+        AbstractTree newParent = child.getParent();
+        if (newParent != null) {
+            List<AbstractTreeView> parentViews = newParent.getTreeViews();
+            for (AbstractTreeView childView : childViews) {
+                for (AbstractTreeView parentView : parentViews) {
+                    Link link = new Link(childView, parentView, this);
+                    links.add(link);
+                }
+            }
+        }
+   }
+
+
+    @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        for (Link obj : links) {
+       for (Link obj : links) {
             obj.draw(g);
         }
 
@@ -122,12 +152,18 @@ public class ConstructorSpace extends JPanel {
 
         @Override
         public void mouseClicked(MouseEvent e) {
-            TreeView newElem = new TreeView(ConstructorSpace.this,
-                    new ConstantValueTree(new HInt(42)), e.getX(), e.getY());
+            ConstantValueTree tree = new ConstantValueTree<>(new HString("123"));
+            AbstractTreeView newElem =
+                    new ConstantValueView(ConstructorSpace.this, tree);
+
+            newElem.setBounds(e.getX() - 50, e.getY() - 25, 100, 50);
+
+            //TreeView newElem = new TreeView(ConstructorSpace.this,
+            //        new ConstantValueTree(new HInt(42)), e.getX(), e.getY());
             treeViews.add(newElem);
+            tree.addTreeView(newElem);
             add(newElem);
             repaint();
-//            System.out.println("ConstructorSpace Clicked");
         }
     }
 }

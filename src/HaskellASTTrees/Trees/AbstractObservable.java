@@ -13,6 +13,8 @@ public abstract class AbstractObservable<T> {
         observers.add(observer);
     }
 
+    public List<T> getObservers() { return observers; }
+
     public void removeObserver(T observer) {
         observers.remove(observer);
     }
