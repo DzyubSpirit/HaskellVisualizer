@@ -5,6 +5,7 @@ import HaskellASTTrees.MyGraphics.GeometricObject;
 import HaskellASTTrees.Tools.Tool;
 import HaskellASTTrees.Tools.ToolChangeObservable;
 import HaskellASTTrees.Tools.ToolChangeObserver;
+import HaskellASTTrees.Tools.ToolChangingManager;
 import HaskellASTTrees.Trees.ConstantValueTree;
 import HaskellASTTrees.MyGraphics.Line;
 
@@ -13,24 +14,24 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
  * Created by vlad on 25.05.16.
  */
-public class ConstructorSpace extends JPanel implements ToolChangeObservable {
+public class ConstructorSpace extends JPanel {
     private List<TreeView> treeViews = new ArrayList<>();
-    private TreeView uppest;
     private List<Link> links = new ArrayList<>();
-    private HashMap<Tool, List<MouseAdapter>> toolMouseAdapters = new HashMap<>();
+    private ToolChangingManager toolChangingManager;
     private Line curLink = null;
     {
-        List<MouseAdapter> handMouseAdapters = new ArrayList<>();
-        handMouseAdapters.add(new HandMouseAdapter());
-        toolMouseAdapters.put(Tool.HAND, handMouseAdapters);
-        toolMouseAdapters.put(Tool.LINK, handMouseAdapters);
-    }
+        MouseAdapter handMouseAdapter = new HandMouseAdapter();
+        toolChangingManager = new ToolChangingManager(this)
+                            .addMouseAdapter(handMouseAdapter)
+                            .saveToolAdapters(Tool.HAND)
+                            .addMouseAdapter(handMouseAdapter)
+                            .saveToolAdapters(Tool.LINK);
+   }
 
 
     public ConstructorSpace() {
@@ -38,14 +39,6 @@ public class ConstructorSpace extends JPanel implements ToolChangeObservable {
 
         setBorder(BorderFactory.createLineBorder(Color.black));
         setBackground(Color.white);
-    }
-
-
-    public void toolChanged(Tool tool) {
-        List<MouseAdapter> mouseAdapters = toolMouseAdapters.get(tool);
-        if (mouseAdapters != null) {
-            ToolChangeObserver.setNewMouseAdapters(this, mouseAdapters);
-        }
     }
 
     public void addCurLink(TreeView treeView) {

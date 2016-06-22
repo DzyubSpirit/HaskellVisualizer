@@ -20,7 +20,7 @@ public class TreeView extends JComponent implements
         GeometricObject {
     private ConstructorSpace constructorSpace;
     private AbstractTree tree;
-    static private ToolChangingManager toolChangingManager;
+    private ToolChangingManager toolChangingManager;
 //    private String name;
 //    private
     private List<TreeViewBoundsListener> boundsListeners = new ArrayList<>();
