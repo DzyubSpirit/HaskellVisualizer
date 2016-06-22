@@ -9,9 +9,9 @@ import java.util.List;
  * Created by vlad on 08.06.16.
  */
 public abstract class AbstractTree<T extends AbstractTreeObserver> extends AbstractObservable<T> {
-    protected AbstractTree parent = null;
-    protected List<AbstractTree> children = new ArrayList<>();
-    protected List<AbstractTreeView> treeViews = new ArrayList<>();
+    private AbstractTree parent = null;
+    private List<AbstractTree> children = new ArrayList<>();
+    private List<AbstractTreeView> treeViews = new ArrayList<>();
 
     public boolean addChild(AbstractTree tree) {
         if (!isGoodParentFor(tree)) {
@@ -70,7 +70,9 @@ public abstract class AbstractTree<T extends AbstractTreeObserver> extends Abstr
 
     public boolean isGoodParentFor(AbstractTree<T> tree) {
        AbstractTree cur = this;
+        System.out.println("isGoodParentFor");
        while (cur != null && cur != tree) {
+           System.out.println(cur);
           cur = cur.parent;
        }
        return cur == null;

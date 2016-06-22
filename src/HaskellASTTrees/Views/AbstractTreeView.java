@@ -21,13 +21,15 @@ public abstract class AbstractTreeView extends JComponent implements
     private ConstructorSpace constructorSpace;
     private AbstractTree tree;
     private List<TreeViewBoundsListener> boundsListeners = new ArrayList<>();
-    private ToolChangingManager toolChangingManager;
     {
-        toolChangingManager = new ToolChangingManager(this)
-                            .addMouseAdapter(new HandMouseAdapter())
-                            .saveToolAdapters(Tool.HAND)
-                            .addMouseAdapter(new LinkMouseAdapter())
-                            .saveToolAdapters(Tool.LINK);
+        System.out.println("Before toolChangingManager");
+        new ToolChangingManager(this)
+            .addMouseAdapter(new HandMouseAdapter())
+            .saveToolAdapters(Tool.HAND)
+            .addMouseAdapter(new LinkMouseAdapter())
+            .saveToolAdapters(Tool.LINK)
+            .itIsAll();
+        System.out.println("After toolChangingManager");
         setBorder(BorderFactory.createLineBorder(Color.black));
     }
 
@@ -192,18 +194,20 @@ public abstract class AbstractTreeView extends JComponent implements
             AbstractTreeView treeView = constructorSpace.findTreeView(
                     AbstractTreeView.this.getX() + e.getX(),
                     AbstractTreeView.this.getY() + e.getY());
-            boolean isGoodLink = false;
             if (treeView != null) {
                 AbstractTree parentTree = treeView.tree;
                 AbstractTree childTree = AbstractTreeView.this.tree;
-                isGoodLink = parentTree.isGoodParentFor(childTree);
+                AbstractTree oldParent = childTree.getParent();
+                if (oldParent != null) {
+                    oldParent.removeChild(childTree);
+                }
+                boolean isGoodLink = parentTree.isGoodParentFor(childTree);
                 if (isGoodLink) {
-                    AbstractTree oldParent = childTree.getParent();
-                    if (oldParent != null) {
-                        oldParent.removeChild(childTree);
-                    }
                     parentTree.addChild(childTree);
                 } else {
+                    if (oldParent != null) {
+                        oldParent.addChild(childTree);
+                    }
                     System.out.println("Not a tree");
                 }
             }

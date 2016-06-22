@@ -15,8 +15,7 @@ public class ToolChangingManager implements ToolChangeObservable {
     private Container container;
 
     public ToolChangingManager(Container container) {
-       ToolChangeObserver.getInstance().add(this);
-       this.container = container;
+        this.container = container;
     }
 
     public ToolChangingManager addMouseAdapter(MouseAdapter mouseAdapter) {
@@ -28,6 +27,10 @@ public class ToolChangingManager implements ToolChangeObservable {
         toolMouseAdapters.put(tool, curList);
         curList = new ArrayList<>();
         return this;
+    }
+
+    public void itIsAll() {
+        ToolChangeObserver.getInstance().add(this);
     }
 
     @Override

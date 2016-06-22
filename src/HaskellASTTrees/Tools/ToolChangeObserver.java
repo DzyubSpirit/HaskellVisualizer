@@ -43,6 +43,9 @@ public class ToolChangeObserver {
 
     public static void setNewMouseAdapters(Container container,
                                             List<MouseAdapter> newMouseAdapters) {
+        for (MouseAdapter mouseAdapter : newMouseAdapters) {
+            System.out.println(mouseAdapter);
+        }
         MouseListener[] mouseListeners = container.getMouseListeners();
         for (MouseListener mouseListener : mouseListeners) {
             container.removeMouseListener(mouseListener);

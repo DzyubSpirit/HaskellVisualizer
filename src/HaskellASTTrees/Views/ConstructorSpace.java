@@ -17,23 +17,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.toList;
-
 /**
  * Created by vlad on 25.05.16.
  */
 public class ConstructorSpace extends JPanel implements AbstractTreeObserver {
     private List<AbstractTreeView> treeViews = new ArrayList<>();
     private List<Link> links = new ArrayList<>();
-    private ToolChangingManager toolChangingManager;
     private Line curLink = null;
     {
         MouseAdapter handMouseAdapter = new HandMouseAdapter();
-        toolChangingManager = new ToolChangingManager(this)
-                            .addMouseAdapter(handMouseAdapter)
-                            .saveToolAdapters(Tool.HAND)
-                            .addMouseAdapter(handMouseAdapter)
-                            .saveToolAdapters(Tool.LINK);
+        new ToolChangingManager(this)
+                .addMouseAdapter(handMouseAdapter)
+                .saveToolAdapters(Tool.HAND)
+                .addMouseAdapter(handMouseAdapter)
+                .saveToolAdapters(Tool.LINK)
+                .itIsAll();
    }
 
 
@@ -97,7 +95,7 @@ public class ConstructorSpace extends JPanel implements AbstractTreeObserver {
     @Override
     public void parentChanged(AbstractTree child, AbstractTree oldParent) {
         List<AbstractTreeView> childViews = child.getTreeViews();
-       links = links.stream()
+        links = links.stream()
                      .filter((Link link) -> !link.getSource().isViewOf(child)
                                          || !link.getTarget().isViewOf(oldParent))
                      .collect(Collectors.toList());
