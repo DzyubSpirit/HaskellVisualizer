@@ -154,7 +154,7 @@ public class ConstructorSpace extends JPanel implements AbstractTreeObserver {
             AbstractTreeView newElem =
                     new ConstantValueView(ConstructorSpace.this, tree);
 
-            newElem.setBounds(e.getX() - 50, e.getY() - 25, 100, 50);
+            newElem.setBounds(e.getX() - 50, e.getY() - 55, 100, 110);
 
             //TreeView newElem = new TreeView(ConstructorSpace.this,
             //        new ConstantValueTree(new HInt(42)), e.getX(), e.getY());
